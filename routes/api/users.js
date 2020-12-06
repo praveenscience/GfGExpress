@@ -16,6 +16,34 @@ app.get("/", (req, res) => {
     res.status(403).json("Please login to see.");
   }
 });
+app.post("/", (req, res) => {
+  const { Username, Password, Name, LinkedIn } = req.body;
+  if (!Username || !Password || !Name) {
+    res.status(400).json({
+      Success: false,
+      Message: "Please give at least Username, Password and Name."
+    });
+  } else {
+    if (
+      Username.trim().length < 4 ||
+      Password.trim().length < 4 ||
+      Name.trim().length < 4
+    ) {
+      res.status(400).json({
+        Success: false,
+        Message:
+          "Username, Password and Name should be at least 4 characters in length."
+      });
+    } else {
+      users.push({
+        Username,
+        Password,
+        Name,
+        LinkedIn
+      });
+    }
+  }
+});
 app.get("/login", (req, res) => {
   const { Authenticated } = req.session;
   res.json({ Authenticated });
