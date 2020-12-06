@@ -116,4 +116,17 @@ app.delete("/:id", (req, res) => {
     res.status(404).json("Error! User Not Found!");
   }
 });
+app.put("/:id", (req, res) => {
+  const UserID = +req.params.id;
+  if (users[UserID]) {
+    users[UserID] = req.body;
+    res.status(202).json({
+      Success: true,
+      Message: `Updated the user ${users[UserID].Name}.`
+    });
+  } else {
+    res.status(404).json("Error! User Not Found!");
+  }
+});
+
 module.exports = app;
