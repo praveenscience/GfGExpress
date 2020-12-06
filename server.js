@@ -1,10 +1,16 @@
 const express = require("express");
 const morgan = require("morgan");
+const session = require("express-session");
 const root = require("./routes/root");
 const app = express();
 const port = 5000;
 
 app.use(express.json());
+app.use(
+  session({
+    secret: "corona"
+  })
+);
 app.use(morgan("dev"));
 app.use("/", root);
 
