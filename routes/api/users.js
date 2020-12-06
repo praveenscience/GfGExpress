@@ -69,8 +69,7 @@ app.post("/login", (req, res) => {
   }
 });
 app.post("/logout", (req, res) => {
-  res.destroy();
-  res.json({ Success: true });
+  req.session.destroy(() => res.json({ Success: true }));
 });
 app.get("/:id", (req, res) => {
   const UserID = +req.params.id;
