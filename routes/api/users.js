@@ -35,16 +35,24 @@ app.post("/", (req, res) => {
           "Username, Password and Name should be at least 4 characters in length."
       });
     } else {
-      users.push({
-        Username,
-        Password,
-        Name,
-        LinkedIn
-      });
-      res.status(201).json({
-        Success: true,
-        Message: `User ${Username} has been added to the database.`
-      });
+      const matches = users.filter(u => u.Username === Username);
+      if (matches.length > 0) {
+        res.status(409).json({
+          Success: false,
+          Message: "User already exists!"
+        });
+      } else {
+        users.push({
+          Username,
+          Password,
+          Name,
+          LinkedIn
+        });
+        res.status(201).json({
+          Success: true,
+          Message: `User ${Username} has been added to the database.`
+        });
+      }
     }
   }
 });
