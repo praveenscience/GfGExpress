@@ -2,6 +2,9 @@ const express = require("express");
 const users = require("../../constants/users");
 const app = express.Router();
 
+app.use(express.json());
+let Authenticated = false;
+
 app.get("/", (req, res) => {
   res.json(
     users.map((u, UserID) => {
@@ -10,6 +13,28 @@ app.get("/", (req, res) => {
       return a;
     })
   );
+});
+app.get("/login", (req, res) => {
+  res.json({ Authenticated });
+});
+app.post("/login", (req, res) => {
+  const { Username, Password } = req.body;
+  if (!Username || !Password) {
+    res.status(400).json("Need both Username and Password.");
+  } else {
+    const matched = users.filter(
+      u =>
+        u.Username.toLowerCase() === Username.toLowerCase() &&
+        u.Password === Password
+    );
+    if (matched.length === 1) {
+      Authenticated = true;
+      res.json({ Success: true });
+    } else if (matched.length === 0) {
+      Authenticated = false;
+      res.status(401).json("Oops! Bad credentials!");
+    }
+  }
 });
 app.get("/:id", (req, res) => {
   const UserID = +req.params.id;
