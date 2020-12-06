@@ -41,6 +41,10 @@ app.post("/", (req, res) => {
         Name,
         LinkedIn
       });
+      res.status(201).json({
+        Success: true,
+        Message: `User ${Username} has been added to the database.`
+      });
     }
   }
 });
